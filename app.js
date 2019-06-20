@@ -7,7 +7,10 @@ app.set("port", process.env.PORT || 3000);
 
 app.use(express.json());
 
-app.locals.notes = [];
+app.locals.notes = [{
+  title: "chores",
+  task: "take out the trash"
+}];
 
 app.get("/api/v1/notes", (request, response) => {
   const notes = app.locals.notes;
@@ -29,7 +32,7 @@ app.post("/api/v1/notes/", (request, response) => {
   const { notes } = app.locals;
   const { title, list } = request.body;
 
-  if (!title || !list) return response.status(422).json({Error: 'Must have a title and list items'});
+  if (!title || !list) return response.status(422).json('Expected format: { title: <String>, list: <StringArray> }');
 
   const newlist = {
     id: ids.generate(),
