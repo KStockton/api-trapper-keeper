@@ -8,26 +8,12 @@ describe("App", () => {
       {
         id: 1,
         title: "TODO",
-        tasks: [
-          {
-            id: 1,
-            text: "testing"
-          }
-        ]
+        notes: [{ id: 1, message: "testing", completed: false}]
       },
       {
         id: 2,
         title: "MORE",
-        tasks: [
-          {
-            id: 3,
-            text: "testing also"
-          },
-          {
-            id: 4,
-            text: "testing also again"
-          }
-        ]
+        notes: [{ id: 3, message: "testing also", completed: false}, { id: 4, message: "testing also again", completed: false}]
       }
     ];
     app.locals.notes = notes;
@@ -71,13 +57,15 @@ describe("App", () => {
   describe("POST /api/v1/notes", () => {
     let newNote;
     let brokenNote;
+
     beforeEach(() => {
       newNote = {
         title: "Cleaning",
-        list: [{ id: 1, text: "testing" }, { id: 3, text: "testing again" }]
+        list: [{ id: 1, message: "testing", completed: false }, { id: 3, message: "testing again", completed: false }]
       };
       brokenNote = { title: "broken" };
     });
+
     it("should return a status of 201 & newNote", async () => {
       expect(app.locals.notes.length).toBe(2);
       const response = await request(app)
@@ -87,37 +75,40 @@ describe("App", () => {
       // expect(response.body).toEqual({ ...newNote})
       expect(app.locals.notes.length).toBe(3);
     });
+
     it("should return 422 and error message", async () => {
       const response = await request(app)
         .post("/api/v1/notes")
         .send(brokenNote);
       expect(response.status).toBe(422);
-      expect(response.body).toEqual({
-        Error: "Must have a title and list items"
-      });
+      expect(response.body).toEqual('Expected format: { title: <String>, list: <StringArray> }');
       expect(app.locals.notes.length).toBe(2);
     });
   });
-  describe("PUT /api/v1/notes", () => {
+
+  describe("PUT /api/v1/:id", () => {
     let newNote;
     let incompleteNote;
+    
     beforeEach(() => {
       newNote = {
-        title: "Cleaning",
-        list: [{ id: 1, text: "testing" }, { id: 3, text: "testing again" }]
+        id: 1,
+        title: "TODO",
+        notes: [{ id: 1, message: "testing", completed: false }, { id: 3, message: "testing again" , completed: false}]
       };
       incompleteNote = { title: "broken" };
     });
 
     it("should update an existing note", async () => {
       const response = await request(app)
-        .put("/api/v1/2")
+        .put("/api/v1/notes/1")
         .send(newNote);
+        expect(response.status).toBe(204)
     });
 
     it("should return a status 204 when successful", async () => {
       const response = await request(app)
-        .put("/api/v1/notes/2")
+        .put("/api/v1/notes/1")
         .send(newNote);
       expect(response.status).toBe(204);
     });

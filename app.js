@@ -7,10 +7,7 @@ app.set("port", process.env.PORT || 3000);
 
 app.use(express.json());
 
-app.locals.notes = [{
-  title: "chores",
-  task: "take out the trash"
-}];
+app.locals.notes = [];
 
 app.get("/api/v1/notes", (request, response) => {
   const notes = app.locals.notes;
@@ -31,7 +28,6 @@ app.get("/api/v1/notes/:id", (request, response) => {
 app.post("/api/v1/notes/", (request, response) => {
   const { notes } = app.locals;
   const { title, list } = request.body;
-
   if (!title || !list) return response.status(422).json('Expected format: { title: <String>, list: <StringArray> }');
 
   const newlist = {
@@ -45,17 +41,15 @@ app.post("/api/v1/notes/", (request, response) => {
 });
 
 app.put("/api/v1/notes/:id", (request, response) => {
-
   const { title, notes } = request.body;
-
   let { id } = request.params;
   const foundNote =  app.locals.notes.find(note => note.id == id)
 
  if(!foundNote) return response.status(404).json({Error: `No note found with ${id} `})
-  if(!title || !notes ) return response.status(422).json({Error: `Expected format: { title: <String>, list: <Stringarray> }`})
+  if(!title || !notes) return response.status(422).json({Error: `Expected format: { title: <String>, notes: <Stringarray> }`})
  
   foundNote.title = title
-  foundNote.list = notes   
+  foundNote.list = notes  
   return response.sendStatus(204).json(app.locals.notes)  
 });
 
