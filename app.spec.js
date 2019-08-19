@@ -118,7 +118,7 @@ describe("App", () => {
         .put("/api/v1/notes/5")
         .send(newNote);
       expect(response.status).toBe(404);
-      expect(response.body).toEqual({ Error: "No note found with 5 " });
+      expect(response.body).toEqual({ Error: "No note found with id of 5 " });
     });
 
     it("should return a status 422 if the correct params are not sent", async () => {
