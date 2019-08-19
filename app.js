@@ -45,7 +45,7 @@ app.put("/api/v1/notes/:id", (request, response) => {
   let { id } = request.params;
   const foundNote =  app.locals.notes.find(note => note.id == id)
 
- if(!foundNote) return response.status(404).json({Error: `No note found with ${id} `})
+ if(!foundNote) return response.status(404).json({Error: `No note found with id of ${id} `})
   if(!title || !notes) return response.status(422).json({Error: `Expected format: { title: <String>, notes: <Stringarray> }`})
  
   foundNote.title = title
