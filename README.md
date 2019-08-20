@@ -1,9 +1,6 @@
 ## Trapper Keeper Back-End
 
-
 The frontend website can be viewed here https://trapper-keeper-front.herokuapp.com/
-The backend website can be viewed here https://the-trapper-keeper-api.herokuapp.com/
-
 
 ### Authors: 
 - [Michael King-Stockton](https://github.com/KStockton)
