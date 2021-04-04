@@ -15,7 +15,7 @@
     "cors": "^2.8.5",
     "esm": "^3.2.25",
     "express": "^4.17.0",
-    "lodash": "^4.17.13",
+    "lodash": "^4.17.19",
     "shortid": "^2.2.14"
   },
   "devDependencies": {
